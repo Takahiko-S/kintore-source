@@ -1,0 +1,16 @@
+@charset "UTF-8";
+h1{
+	color:red;
+	background-color:#f0f0f0;
+	padding:10px;
+}
+
+#midashi{
+	color:blue;
+	padding:10px;
+	border:solid 1px #0000ff;
+}
+.red{
+	color:red;
+	font-weight:bold;
+}
