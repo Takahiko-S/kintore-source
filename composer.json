@@ -50,6 +50,10 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+
+        "compile": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ]
     },
     "extra": {
@@ -68,4 +72,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true
+
 }
