@@ -2,11 +2,12 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "npm run development",
         "build": "vite build"
     },
     "engines": {
         "node": "20.x"
+
       },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
