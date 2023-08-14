@@ -15,7 +15,7 @@ class HistoriesTableSeeder extends Seeder
     {
         for ($i = 1; $i <= 3; $i++) { //$iが設定されている場所の数字が、$iが1から3までの間でループする
             DB::table('histories')->insert([
-                'user_id' => 1,
+                'user_id' => 4,
                 'menu_id' => 1,
                 'menu_exercise_id' => $i,
                 'menu_name' => '月曜',
@@ -32,7 +32,7 @@ class HistoriesTableSeeder extends Seeder
         };
         for ($i = 1; $i <= 2; $i++) { //$iが設定されている場所の数字が、$iが1から3までの間でループする
             DB::table('histories')->insert([
-                'user_id' => 1,
+                'user_id' => 4,
                 'menu_id' => 1,
                 'menu_exercise_id' => $i + 3,
                 'menu_name' => '月曜',
@@ -49,7 +49,7 @@ class HistoriesTableSeeder extends Seeder
         };
         for ($i = 1; $i <= 2; $i++) { //$iが設定されている場所の数字が、$iが1から3までの間でループする
             DB::table('histories')->insert([
-                'user_id' => 1,
+                'user_id' => 4,
                 'menu_id' => 1,
                 'menu_exercise_id' => $i + 5,
                 'menu_name' => '月曜',
