@@ -2,7 +2,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "npm run development",
+        "dev": "vite",
+        "development": "vite",
         "build": "vite build"
     },
     "engines": {
