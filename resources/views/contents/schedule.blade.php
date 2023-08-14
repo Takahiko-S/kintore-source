@@ -41,6 +41,13 @@
                 overflow: hidden;
                 transition: max-height 0.2s ease-out;
             }
+
+            @media screen and (max-width: 600px) {
+                .btn.add-menu-button {
+                    height: 50px;
+                    /* 例: 50pxに設定 */
+                }
+            }
         </style>
     </x-slot>
 

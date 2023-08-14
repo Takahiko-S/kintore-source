@@ -4,7 +4,19 @@
     <x-slot name="title">ホーム</x-slot>
     <x-slot name="css">
         <style type="text/css">
+            .set-header .short-form {
+                display: none;
+            }
 
+            @media screen and (max-width: 600px) {
+                .set-header .short-form {
+                    display: inline;
+                }
+
+                .set-header .full-form {
+                    display: none;
+                }
+            }
         </style>
     </x-slot>
     <x-slot name="main">
@@ -17,26 +29,29 @@
             @endif
 
             @if ($menu)
-                <div class="row align-items-center mt-5">
+                <div class="row align-items-center">
+
+
                     <div class="col-12 text-center">
                         <h1>今日の種目：{{ \Carbon\Carbon::now()->format('Y/m/d') }}</h1>
                     </div>
 
-                    <div class="col-md-12 mt-5">
-                        <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal"
-                            data-bs-target="#confirmModal">
-                            メニュー完了
-                        </button>
-                    </div>
                     <div class="col-12">
                         <h2>メニュー名：{{ $menu->name }}</h2>
                     </div>
 
+                    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal"
+                        data-bs-target="#confirmModal">
+                        メニュー完了
+                    </button>
 
-                    <div class="col-12">
-                        <h3 class="mb-3">説明</h3>
-                        <p>{{ $menu->description }}</p>
-                    </div>
+
+                    @if (count($menu->menuExercises->groupBy('exercise_id')) >= 2)
+                        <div class="col-10 mx-auto mt-2 ">
+                            <a href="{{ route('today_edit', ['id' => $menu->id]) }}"
+                                class="btn btn-primary btn-lg w-100">種目の編集</a>
+                        </div>
+                    @endif
                 </div>
 
 
@@ -58,7 +73,7 @@
                             });
                         @endphp
                         <div style="background-color: {{ $loop->iteration % 2 == 0 ? '#f8f9fa' : '#e9ecef' }};">
-                            <div class="row align-items-center mt-5">
+                            <div class="row align-items-center mt-3">
                                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                                     <h3>{{ $menuExercisesForExercise->first()->exercise->name }}</h3>
                                     @if (!$allSetsCompleted)
@@ -70,10 +85,17 @@
                                     <table class="table">
                                         <thead>
                                             <tr class="text-center">
-                                                <th scope="col">セット</th>
+                                                <th scope="col" class="set-header">
+                                                    <span class="full-form">セット</span>
+                                                    <span class="short-form">＃</span>
+                                                </th>
+
                                                 <th scope="col">回数</th>
                                                 <th scope="col">重量 (kg)</th>
-                                                <th scope="col">完了</th>
+                                                <th scope="col" class="set-header">
+                                                    <span class="full-form">完了</span>
+                                                    <span class="short-form">完</span>
+                                                </th>
                                             </tr>
                                         </thead>
                                         @foreach ($menuExercisesForExercise as $menuExercise)
@@ -154,6 +176,8 @@
 
 
 
-    <x-slot name="script"></x-slot>
+    <x-slot name="script">
+        <script></script>
+    </x-slot>
 
 </x-base-layout>
