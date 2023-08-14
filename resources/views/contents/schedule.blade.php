@@ -15,11 +15,38 @@
                 /* Adjust padding as needed */
                 cursor: pointer;
             }
+
+            /* Style the buttons that are used to open and close the accordion panel */
+            .accordion {
+                background-color: #eee;
+                color: #444;
+                cursor: pointer;
+                padding: 18px;
+                width: 100%;
+                text-align: left;
+                border: none;
+                outline: none;
+                transition: 0.4s;
+            }
+
+            /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+            .active,
+            .accordion:hover {
+                background-color: #ccc;
+            }
+
+            /* Style the accordion panel. Note: hidden by default */
+            .panel {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease-out;
+            }
         </style>
     </x-slot>
 
     <x-slot name="main">
         <div class="container">
+
             <h2 class="mt-4 text-center">筋トレスケジュール</h2>
 
             @if (session('message'))
@@ -36,28 +63,20 @@
                 </button>
             @endif
 
-
-
-            <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div id="accordionFlushExample">
                 @foreach ($menus as $menuIndex => $menu)
                     <div class="accordion-item" data-order="{{ $menu->order }}" data-id="{{ $menu->id }}">
-                        <h2 class="accordion-header row">
+                        <div class="accordion-header row">
                             <div class="col-11">
-                                <button class="accordion-button collapsed pe-0" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapse{{ $menuIndex }}" aria-expanded="false"
-                                    aria-controls="flush-collapse{{ $menuIndex }}"> {{ $menu->name }}
-                                </button>
+                                <button class="accordion">{{ $menu->name }}</button>
                             </div>
-                            <div class="col-1 text-center  px-0">
+                            <div class="col-1 text-center px-0">
                                 <button type="button" class="btn btn-primary add-menu-button" data-bs-toggle="modal"
-                                    data-bs-target="#newModal" data-menu-index="{{ $menuIndex }}">＋
-                                </button>
+                                    data-bs-target="#newModal" data-menu-index="{{ $menuIndex }}">＋</button>
                             </div>
+                        </div>
+                        <div class="panel">
 
-                        </h2>
-
-                        <div id="flush-collapse{{ $menuIndex }}" class="accordion-collapse collapse"
-                            data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body">
                                 <div class="col-12 text-start">
                                     @if ($menu->menuExercises)
@@ -79,7 +98,8 @@
                                                     @foreach ($menuExercises as $exerciseIndex => $menuExercise)
                                                         <tr>
                                                             <th class="text-center" scope="row">
-                                                                {{ $exerciseIndex == 0 ? $workoutNo++ : '' }}</th>
+                                                                {{ $exerciseIndex == 0 ? $workoutNo++ : '' }}
+                                                            </th>
                                                             <td class="text-center" style="width: 50%;">
                                                                 {{ $menuExercise->exercise->name }}
                                                             </td>
@@ -124,158 +144,164 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 @endforeach
             </div>
 
-        </div>
 
 
 
-        <!--ーーーーーーーーーーーーーーーーーーーーーーーーーー削除モーダルーーーーーーーーーーーーーーーーーーーー-->
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel">削除の確認</h5>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-center" id="menuName"></p>
-                        <p class="text-center">このメニューを削除してもよろしいですか？</p>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="mx-auto">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                            <button type="button" class="btn btn-danger ms-5" id="confirmDelete">削除する</button>
+            <!--ーーーーーーーーーーーーーーーーーーーーーーーーーー削除モーダルーーーーーーーーーーーーーーーーーーーー-->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">削除の確認</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-center" id="menuName"></p>
+                            <p class="text-center">このメニューを削除してもよろしいですか？</p>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="mx-auto">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                                <button type="button" class="btn btn-danger ms-5" id="confirmDelete">削除する</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--ーーーーーーーーーーーーーーーーーーーーーーーーーーメニュー追加モーダルーーーーーーーーーーーーーーーーーーーー-->
+            <!--ーーーーーーーーーーーーーーーーーーーーーーーーーーメニュー追加モーダルーーーーーーーーーーーーーーーーーーーー-->
 
-        <!-- Modal -->
-        <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="newModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="newModalLabel">新メニュー作成</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+            <!-- Modal -->
+            <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="newModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="newModalLabel">新メニュー作成</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
 
-                    </div>
-                    <div class="modal-body">
-                        <form id="exercises-form" action="{{ route('add_menu') }}" method="POST">
-                            @csrf
-                            <input type="hidden" id="insert-position" name="insert_position">
-                            <div class="col-12 text-end">
-                                <button type="button" class="btn btn-primary mx-auto mb-2" data-bs-toggle="modal"
-                                    data-bs-target="#newExerciseModal" id="new-exercises">種目を追加</button>
-                            </div>
-
-                            @error('selectedExercises')
-                                <div id="selectedExercises-error" class="alert alert-danger">{{ $message }}
+                        </div>
+                        <div class="modal-body">
+                            <form id="exercises-form" action="{{ route('add_menu') }}" method="POST">
+                                @csrf
+                                <input type="hidden" id="insert-position" name="insert_position">
+                                <div class="col-12 text-end">
+                                    <button type="button" class="btn btn-primary mx-auto mb-2"
+                                        data-bs-toggle="modal" data-bs-target="#newExerciseModal"
+                                        id="new-exercises">種目を追加</button>
                                 </div>
-                            @enderror
-                            <div class="mb-3">
-                                <label for="menuName" class="form-label">メニュー名</label>
-                                <input type="text" class="form-control" id="menuname" name="menu_name" required>
-                                @error('menu_name')
+
+                                @error('selectedExercises')
+                                    <div id="selectedExercises-error" class="alert alert-danger">{{ $message }}
+                                    </div>
+                                @enderror
+                                <div class="mb-3">
+                                    <label for="menuName" class="form-label">メニュー名</label>
+                                    <input type="text" class="form-control" id="menuname" name="menu_name"
+                                        required>
+                                    @error('menu_name')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                @foreach ($exercises as $body_part => $exercises_in_body_part)
+                                    <div>
+                                        <h5>{{ $body_part }}</h5>
+                                        <div class="d-flex flex-wrap justify-content-start">
+                                            @foreach ($exercises_in_body_part as $exercise)
+                                                <div class="form-check m-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        value="{{ $exercise->id }}" id="exercise{{ $exercise->id }}"
+                                                        name="selectedExercises[]">
+                                                    <label class="form-check-label"
+                                                        for="exercise{{ $exercise->id }}">
+                                                        {{ $exercise->name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
+
+
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">閉じる</button>
+                                        <button type="submit" class="btn btn-info"
+                                            id="add-exercises">メニュー作成</button>
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <!--ーーーーーーーーーーーーーーーーーーーーーーーーーーモーダルーーーーーーーーーーーーーーーーーーーー-->
+
+            <!--ーーーーーーーーーーーーーーーーーーーーーーーーーー新しい種目追加のモーダルーーーーーーーーーーーーーーーーーーーーーーーーーーーー-->
+            <!-- New Exercise Modal -->
+            <div class="modal fade" id="newExerciseModal" tabindex="-1" aria-labelledby="newExerciseModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="newExerciseModalLabel">新しい種目を追加する</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new-exercise-form" action="{{ route('add_new_exercise') }}" method="POST">
+                                @csrf
+                                @error('body_part')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
 
-                            @foreach ($exercises as $body_part => $exercises_in_body_part)
-                                <div>
-                                    <h5>{{ $body_part }}</h5>
-                                    <div class="d-flex flex-wrap justify-content-start">
-                                        @foreach ($exercises_in_body_part as $exercise)
-                                            <div class="form-check m-2">
-                                                <input class="form-check-input" type="checkbox"
-                                                    value="{{ $exercise->id }}" id="exercise{{ $exercise->id }}"
-                                                    name="selectedExercises[]">
-                                                <label class="form-check-label" for="exercise{{ $exercise->id }}">
-                                                    {{ $exercise->name }}
-                                                </label>
-                                            </div>
-                                        @endforeach
+                                <div id="body-part-error"></div>
+                                <div class="mb-3">
+                                    <label for="exerciseName" class="form-label">種目名</label>
+                                    <input type="text" class="form-control" id="exerciseName"
+                                        name="exercise_name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bodyPart" class="form-label">部位</label>
+                                    <div class="input-group">
+                                        <select class="form-select" id="bodyPart" name="body_part"
+                                            aria-label="選択する部位">
+                                            <option selected value="">既存の部位を選択</option>
+                                            @foreach ($body_parts as $body_part)
+                                                <option value="{{ $body_part }}">{{ $body_part }}</option>
+                                            @endforeach
+                                        </select>
+
+
+                                        <input type="text" class="form-control" id="newBodyPart"
+                                            name="new_body_part" placeholder="新しい部位を追加" aria-label="新しい部位">
                                     </div>
                                 </div>
-                            @endforeach
 
+                                <button type="submit" class="btn btn-primary">種目追加</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                            </form>
+                        </div>
 
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">閉じる</button>
-                                    <button type="submit" class="btn btn-info" id="add-exercises">メニュー作成</button>
-                                </div>
-
-
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
-
-
-        </div>
-
-
-
-
-
-        <!--ーーーーーーーーーーーーーーーーーーーーーーーーーーモーダルーーーーーーーーーーーーーーーーーーーー-->
-
-        <!--ーーーーーーーーーーーーーーーーーーーーーーーーーー新しい種目追加のモーダルーーーーーーーーーーーーーーーーーーーーーーーーーーーー-->
-        <!-- New Exercise Modal -->
-        <div class="modal fade" id="newExerciseModal" tabindex="-1" aria-labelledby="newExerciseModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="newExerciseModalLabel">新しい種目を追加する</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="new-exercise-form" action="{{ route('add_new_exercise') }}" method="POST">
-                            @csrf
-                            @error('body_part')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-
-                            <div id="body-part-error"></div>
-                            <div class="mb-3">
-                                <label for="exerciseName" class="form-label">種目名</label>
-                                <input type="text" class="form-control" id="exerciseName" name="exercise_name"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="bodyPart" class="form-label">部位</label>
-                                <div class="input-group">
-                                    <select class="form-select" id="bodyPart" name="body_part" aria-label="選択する部位">
-                                        <option selected value="">既存の部位を選択</option>
-                                        @foreach ($body_parts as $body_part)
-                                            <option value="{{ $body_part }}">{{ $body_part }}</option>
-                                        @endforeach
-                                    </select>
-
-
-                                    <input type="text" class="form-control" id="newBodyPart" name="new_body_part"
-                                        placeholder="新しい部位を追加" aria-label="新しい部位">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">種目追加</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div>
 
 
 
@@ -287,38 +313,56 @@
     <x-slot name="script">
         <script>
             //-------------------------------メニューのソート------------------------------------------
-            $(function() {
-                var accordion = $("#accordionFlushExample");
-
-                // SortableJSの初期化
-                var sortable = new Sortable(accordion[0], {
-                    animation: 150,
-                    handle: '.accordion-header', // ドラッグハンドルとして使用する要素
-                    onEnd: function(evt) {
-                        var order = {};
-                        $('.accordion-item').each(function(index) {
-                            order[$(this).data('id')] = index;
-                        });
-                        console.log(order);
-                        // Ajaxリクエストで新しい順序をサーバーに送信
-                        $.ajax({
-                            url: '{{ route('update_menu_order') }}', // 適切なURLに変更してください
-                            type: 'POST',
-                            data: {
-                                order: order,
-                                _token: $('meta[name="csrf-token"]').attr('content') // CSRF token
-                            },
-                            success: function(data) {
-                                console.log(data)
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                console.error("Ajax request failed: ", textStatus, ", ",
-                                    errorThrown);
-                            }
-                        });
+            // SortableJSの初期化
+            var accordion = document.getElementById("accordionFlushExample");
+            var sortable = new Sortable(accordion, {
+                animation: 150,
+                handle: '.accordion-header', // ドラッグハンドルとして使用する要素
+                onEnd: function(evt) {
+                    var order = {};
+                    $('.accordion-item').each(function(index) {
+                        order[$(this).data('id')] = index;
+                    });
+                    console.log(order);
+                    // Ajaxリクエストで新しい順序をサーバーに送信
+                    $.ajax({
+                        url: '{{ route('update_menu_order') }}', // 適切なURLに変更してください
+                        type: 'POST',
+                        data: {
+                            order: order,
+                            _token: $('meta[name="csrf-token"]').attr('content') // CSRF token
+                        },
+                        success: function(data) {
+                            console.log(data)
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("Ajax request failed: ", textStatus, ", ", errorThrown);
+                        }
+                    });
+                }
+            });
+            //-------------------------------アコーディオン------------------------------------------
+            var acc = document.getElementsByClassName("accordion");
+            for (var i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.closest('.accordion-header').nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
                     }
                 });
-            });
+            }
+
+
+
+
+
+
+
+
+
             //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー削除モーダルーーーーーーーーーーーーーーーーーーーーーーーーーーーー-->
             $('#deleteModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal
@@ -403,7 +447,7 @@
                         error: function(jqXHR, textStatus, errorThrown) {
                             var errors = jqXHR.responseJSON.errors;
                             var errorMessage = jqXHR.responseJSON.message ||
-                            'エラーが発生しました。'; // 一般的なエラーメッセージ
+                                'エラーが発生しました。'; // 一般的なエラーメッセージ
 
                             // body_part_combinationやnew_body_partに関連するエラーがあれば取得
                             if (errors) {

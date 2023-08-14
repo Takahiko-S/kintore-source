@@ -17,19 +17,19 @@ class MenusTableSeeder extends Seeder
         // メニューのデータを作成
         $menus = [
             [
-                'user_id' => 4,
+                'user_id' => 1,
                 'name' => '月曜',
                 'description' => '月曜日は胸トレメインです',
                 'order' => 1,
             ],
             [
-                'user_id' => 4,
+                'user_id' => 1,
                 'name' => '火曜',
                 'description' => '火曜日は背中トレメインです',
                 'order' => 2,
             ],
             [
-                'user_id' => 4,
+                'user_id' => 1,
                 'name' => '水曜',
                 'description' => '水曜日は脚トレメインです',
                 'order' => 3,
