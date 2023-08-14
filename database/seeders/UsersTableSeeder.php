@@ -3,7 +3,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +16,13 @@ class UsersTableSeeder extends Seeder
     public function run(): void
     {
         $init_users = [
+            [
+                'name' => 'taka',
+                'email' => 'rugbytte.iinee@icloud.com',
+                'password' => 'sasa2308',
+
+                'last_finish_order' => 0
+            ],
             [
                 'name' => '管理者',
                 'email' => 'webmaster@localhost.localdomain',
