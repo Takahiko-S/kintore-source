@@ -33,11 +33,11 @@
 
 
                     <div class="col-12 text-center">
-                        <h1>今日の種目：{{ \Carbon\Carbon::now()->format('Y/m/d') }}</h1>
+                        <h1>{{ \Carbon\Carbon::now()->format('Y/m/d') }}</h1>
                     </div>
 
                     <div class="col-12">
-                        <h2>メニュー名：{{ $menu->name }}</h2>
+                        <h2>今日の種目：{{ $menu->name }}</h2>
                     </div>
 
                     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal"
@@ -67,7 +67,7 @@
                         @php
                             $todayStart = \Carbon\Carbon::today();
                             $todayEnd = \Carbon\Carbon::tomorrow();
-                            
+
                             $allSetsCompleted = $menuExercisesForExercise->every(function ($menuExercise) use ($todayStart) {
                                 return $menuExercise->histories->where('exercise_date', $todayStart->format('Y-m-d'))->isNotEmpty();
                             });
