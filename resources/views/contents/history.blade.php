@@ -6,7 +6,8 @@
             @if ($history && count($history) > 0)
                 <div class="row align-items-center mt-5">
                     <div class="col-12 text-center mb-5">
-                        <h1>{{ $date }} 実施メニュー : {{ $menu_name }}</h1>
+                        <h1>{{ $date }} </h1>
+                        <h1>メニュー名： {{ $menu_name }}</h1>
                     </div>
                 </div>
 

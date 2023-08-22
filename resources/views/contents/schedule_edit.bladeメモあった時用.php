@@ -133,7 +133,16 @@
 
                                             </tr>
 
-
+                                            @if ($setIndex == 0)
+                                                <!-- メモを行の新たなセルに追加 -->
+                                                <div class="col-12">
+                                                    <label for="memo">メモ:</label>
+                                                    <textarea class="form-control" rows="2" name="menu_exercises[{{ $globalIndex }}][memo]" rows="3">{{ $menuExercise->memo }}</textarea>
+                                                </div>
+                                                @php
+                                                    $setIndex++;
+                                                @endphp
+                                            @endif
                                             @php
                                                 $globalIndex++;
                                             @endphp
@@ -199,7 +208,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">追加種目選択</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     @error('selectedExercises')
                         <div id="selectedExercises-error" class="alert alert-danger">{{ $message }}</div>

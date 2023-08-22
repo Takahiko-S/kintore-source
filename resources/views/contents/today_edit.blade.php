@@ -119,19 +119,7 @@
                                                 </td>
 
                                             </tr>
-                                            @if ($setIndex == 0)
-                                                <!-- メモ -->
-                                                <div class="col-12">
-                                                    <label for="memo">メモ:</label>
-                                                    <textarea class="form-control" rows="2" name="menu_exercises[{{ $globalIndex }}][memo]" rows="3">{{ $menuExercise->memo }}</textarea>
-                                                    @error('menu_exercises.' . $globalIndex . '.memo')
-                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                                @php
-                                                    $setIndex++;
-                                                @endphp
-                                            @endif
+
                                             @php
                                                 $globalIndex++;
                                             @endphp
